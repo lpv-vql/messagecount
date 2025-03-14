@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch通知数</title>
+    <script>
+        async function fetchNotifications() {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get("user");
+            if (!username) {
+                document.getElementById("notification").innerText = "ユーザー名が指定されていません";
+                return;
+            }
+
+            const userLink = `<a href="https://scratch.mit.edu/users/${username}/" target="_blank">${username}</a>`;
+            document.getElementById("user-info").innerHTML = `${userLink} の通知数は...`;
+            
+            try {
+                const response = await fetch(`https://api.scratch.mit.edu/users/${username}/messages/count/`);
+                const data = await response.json();
+                document.getElementById("notification").innerText = data.count;
+            } catch (error) {
+                document.getElementById("notification").innerText = "取得に失敗しました";
+            }
+        }
+
+        window.onload = fetchNotifications;
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #user-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+        }
+        #notification {
+            font-size: 100px;
+            font-weight: bold;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="user-info"></div>
+    <div id="notification">Loading...</div>
+</body>
+</html>
