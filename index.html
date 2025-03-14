@@ -17,7 +17,7 @@
                 `<a href="https://scratch.mit.edu/users/${username}/" target="_blank">${username}</a> の通知数`;
             
             try {
-                const apiUrl = `https://api.scratch.mit.edu/users/${username}/messages/count`;
+                const apiUrl = `GET https://api.scratch.mit.edu/users/${username}/messages/count`;
                 const response = await fetch(apiUrl, { method: "GET" });
                 if (!response.ok) throw new Error("APIエラー");
                 
